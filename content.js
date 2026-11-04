@@ -5,8 +5,6 @@
   const ORDER_CARD_SELECTOR = '[data-sqe="order-item"], [class*="order-card"], [class*="OrderCard"], [class*="order-item"]';
   const TOTAL_LABEL = /(?:Total do Pedido|Total do pagamento|Order Total)/i;
   const FINALIZED_STATUS = /\bFINALIZADO\b/i;
-  const EVALUATED_STATUS = /\b(?:AVALIADO|AVALIADA|AVALIAÇÃO ENVIADA|AVALIAÇÃO CONCLUÍDA|REVIEWED)\b/i;
-  const WAITING_FOR_REVIEW = /\b(?:AVALIAR|AVALIE(?:\s+AGORA)?)\b/i;
   const EXCLUDED_STATUS = /\b(?:CANCELADO|CANCELADA|REEMBOLSADO|REEMBOLSADA|DEVOLVIDO|DEVOLVIDA|ESTORNADO|ESTORNADA)\b/i;
 
   const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -48,7 +46,7 @@
     for (const card of findOrderCards()) {
       const text = (card.innerText || "").replace(/\s+/g, " ").trim();
       if (!text || text.length > 3000) continue;
-      if (!FINALIZED_STATUS.test(text) || !EVALUATED_STATUS.test(text) || WAITING_FOR_REVIEW.test(text) || EXCLUDED_STATUS.test(text)) continue;
+      if (!FINALIZED_STATUS.test(text) || EXCLUDED_STATUS.test(text)) continue;
 
       const totals = [...text.matchAll(/(?:Total do Pedido|Total do pagamento|Order Total)\s*:?\s*(?:R\$\s*)?([\d.]+,\d{2})/gi)];
       let amount = totals.length ? Number(totals.at(-1)[1].replace(/\./g, "").replace(",", ".")) : null;

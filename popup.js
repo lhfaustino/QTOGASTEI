@@ -10,14 +10,14 @@ chrome.storage.local.get(["total", "orders", "updatedAt"], data => {
 
 function render(data) {
   totalNode.textContent = money(data.total || 0);
-  summaryNode.textContent = `${data.orders || 0} pedidos finalizados e avaliados nesta leitura`;
+  summaryNode.textContent = `${data.orders || 0} pedidos finalizados nesta leitura`;
 }
 
 button.addEventListener("click", async () => {
   statusNode.textContent = "";
   button.disabled = true;
   button.textContent = "Percorrendo os pedidos…";
-  summaryNode.textContent = "Carregando a lista e identificando pedidos finalizados e avaliados.";
+  summaryNode.textContent = "Carregando a lista e identificando pedidos finalizados.";
   try {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
     let pageUrl;
@@ -41,11 +41,11 @@ button.addEventListener("click", async () => {
     render(saved);
     statusNode.textContent = result.reachedLimit
       ? "A Shopee continuou carregando pedidos; abra novamente e repita a leitura para completar."
-      : result.orders ? "Leitura concluída: somente pedidos finalizados e avaliados." : "Nenhum pedido finalizado e avaliado foi identificado nesta lista.";
+      : result.orders ? "Leitura concluída: somente pedidos finalizados." : "Nenhum pedido finalizado foi identificado nesta lista.";
   } catch (error) {
     statusNode.textContent = error.message || "Não foi possível ler esta página.";
   } finally {
     button.disabled = false;
-    button.textContent = "Somar pedidos finalizados e avaliados";
+    button.textContent = "Somar pedidos finalizados";
   }
 });
