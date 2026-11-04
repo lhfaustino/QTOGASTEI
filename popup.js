@@ -21,7 +21,7 @@ button.addEventListener("click", async () => {
     if (!tab?.id || !tab.url?.includes("shopee.com.br")) {
       throw new Error("Abra sua conta Shopee e acesse a área de pedidos.");
     }
-    const [result] = await chrome.tabs.sendMessage(tab.id, { type: "SCAN_ORDERS" });
+    const result = await chrome.tabs.sendMessage(tab.id, { type: "SCAN_ORDERS" });
     if (!result?.ok) throw new Error(result?.error || "Não encontrei valores de pedidos nesta página.");
     const saved = { total: result.total, orders: result.orders, updatedAt: Date.now() };
     await chrome.storage.local.set(saved);
