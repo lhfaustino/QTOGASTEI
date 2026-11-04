@@ -4,14 +4,14 @@
   "version": "1.0.0",
   "description": "Some os valores dos pedidos carregados na sua conta Shopee.",
   "permissions": ["activeTab", "storage"],
-  "host_permissions": ["https://shopee.com.br/*", "https://*.shopee.com.br/*"],
+  "host_permissions": ["https://shopee.com.br/*"],
   "action": {
     "default_title": "Quanto Gastei na Shopee?",
     "default_popup": "popup.html"
   },
   "content_scripts": [
     {
-      "matches": ["https://shopee.com.br/*", "https://*.shopee.com.br/*"],
+      "matches": ["https://shopee.com.br/user/purchase/*"],
       "js": ["content.js"],
       "run_at": "document_idle"
     }
