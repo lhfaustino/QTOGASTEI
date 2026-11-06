@@ -9,6 +9,17 @@
 
   const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
+  function reportProgress(orders, round) {
+    const entries = [...orders.values()];
+    const total = entries.reduce((sum, amount) => sum + amount, 0);
+    chrome.runtime.sendMessage({
+      type: "SCAN_PROGRESS",
+      orders: entries.length,
+      total,
+      round
+    }).catch(() => {});
+  }
+
   function findOrderCards() {
     const selectedCards = [...document.querySelectorAll(ORDER_CARD_SELECTOR)];
     if (selectedCards.length) {
@@ -77,6 +88,7 @@
       while (rounds < MAX_SCROLL_ROUNDS && idleRounds < IDLE_ROUNDS_TO_FINISH) {
         rounds += 1;
         for (const order of readVisibleOrders()) orders.set(order.id, order.amount);
+        reportProgress(orders, rounds);
 
         const height = root.scrollHeight;
         const bottom = Math.max(0, height - window.innerHeight);
@@ -84,6 +96,7 @@
         if (atBottom) {
           await wait(WAIT_AFTER_SCROLL_MS);
           for (const order of readVisibleOrders()) orders.set(order.id, order.amount);
+          reportProgress(orders, rounds);
 
           const latestHeight = root.scrollHeight;
           if (latestHeight === previousHeight && orders.size === previousCount) idleRounds += 1;

@@ -13,6 +13,7 @@ Extensão para Chrome que percorre automaticamente a área de pedidos da Shopee 
 ## Como funciona
 
 - Rola a lista de pedidos automaticamente e lê o conteúdo carregado na página aberta.
+- Atualiza o subtotal e a quantidade de pedidos no popup a cada etapa da rolagem; mantenha o popup aberto durante a leitura.
 - Só funciona em `shopee.com.br/user/purchase/`.
 - Inclui todos os cartões com status **FINALIZADO**, avaliados ou pendentes de avaliação; ignora pedidos cancelados, devolvidos ou reembolsados.
 - Mostra a soma e a quantidade identificada na leitura.
